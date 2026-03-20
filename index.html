@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Ocean Explorer - 2026 바다꾸러기 키움사업</title>
+    <link rel="icon" href="https://emojicdn.elk.sh/🌊" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.61.0/build/stlite.css" />
+    <style>
+      body { margin: 0; padding: 0; overflow: hidden; background-color: #f0f8ff; }
+      #root { width: 100vw; height: 100vh; }
+      /* Preloader */
+      #preloader {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: radial-gradient(circle at center, #0077b6, #000);
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        z-index: 9999; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      .loader {
+        border: 4px solid #f3f3f3; border-top: 4px solid #00b4d8;
+        border-radius: 50%; width: 50px; height: 50px;
+        animation: spin 1s linear infinite; margin-bottom: 1rem;
+      }
+      @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+  </head>
+  <body>
+    <div id="preloader">
+      <div class="loader"></div>
+      <div>🌊 바다 탐험가 엔진을 시동 중입니다...</div>
+    </div>
+    <div id="root"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.61.0/build/stlite.js"></script>
+    <script>
+      stlite.mount({
+        requirements: ["pandas", "plotly", "pillow"],
+        entrypoint: "app.py",
+        files: {
+          "app.py": `
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+from PIL import Image
+import random
+
+# Page configuration
+st.set_page_config(
+    page_title="Ocean Explorer",
+    page_icon="🌊",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
+# Custom CSS
+st.markdown("""
+<style>
+    .stApp {
+        background: linear-gradient(135deg, #e0f2fe, #fdfbfb);
+    }
+    h1 {
+        color: #0077b6;
+        font-family: 'Gothic', sans-serif;
+        font-weight: 800;
+        text-align: center;
+    }
+    .stButton>button {
+        background-color: #0077b6;
+        color: white;
+        border-radius: 12px;
+        transition: 0.3s ease;
+    }
+    .stButton>button:hover {
+        background-color: #00b4d8;
+        transform: scale(1.05);
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Application Navigation
+with st.sidebar:
+    st.image("https://images.unsplash.com/photo-1459213599465-03ad6a47b431?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80", use_container_width=True)
+    st.title("🌊 바다 탐험가")
+    menu = st.radio(
+        "메뉴 선택",
+        ["🏠 홈 (Home)", "📚 학습 (Learning)", "💡 퀴즈 (Quiz)", "📷 활동 기록 (Data Logger)", "🗺️ 바다 지도 (Ocean Map)"]
+    )
+    st.markdown("---")
+    st.write("2026 바다꾸러기 키움사업")
+
+# Sections
+if menu == "🏠 홈 (Home)":
+    st.title("🌊 바다 탐험가")
+    st.markdown("""
+    ### 안녕하세요, 바다 탐험가 여러분! 👋
+    해양 생태계는 우리 지구의 70%를 차지합니다. 이 앱에서 바다를 배우고 지켜주세요!
+    """)
+    st.image("https://images.unsplash.com/photo-1544551763-47a184117db7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80")
+
+elif menu == "📚 학습 (Learning)":
+    st.title("📚 학습 콘텐츠")
+    st.write("미세 플라스틱 오염과 기후 변화에 대해 알아봅니다.")
+    st.image("https://images.unsplash.com/photo-1546026423-cc064306478c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80")
+
+elif menu == "💡 퀴즈 (Quiz)":
+    st.title("💡 퀴즈 타임")
+    ans = st.radio("지구 산소의 절반 이상을 만드는 곳은?", ["바다", "아마존", "공원"])
+    if st.button("정답 확인"):
+        if ans == "바다": st.success("정답입니다!"); st.balloons()
+        else: st.error("해양이 정답입니다.")
+
+elif menu == "📷 활동 기록 (Data Logger)":
+    st.title("📷 활동 기록")
+    with st.form("log"):
+        st.date_input("날짜")
+        st.text_area("메모")
+        if st.form_submit_button("저장"): st.success("저장되었습니다!")
+
+elif menu == "🗺️ 바다 지도 (Ocean Map)":
+    st.title("🗺️ 해양 보호구역 지도")
+    locs = pd.DataFrame({'lat': [33.22, 36.85, 34.81], 'lon': [126.56, 126.18, 127.48], 'name': ['서귀포', '태안', '보성']})
+    fig = px.scatter_mapbox(locs, lat="lat", lon="lon", hover_name="name", zoom=5)
+    fig.update_layout(mapbox_style="open-street-map", margin={"r":0,"t":0,"l":0,"b":0})
+    st.plotly_chart(fig, use_container_width=True)
+`
+        },
+      }, document.getElementById("root")).then(() => {
+        document.getElementById("preloader").style.display = "none";
+      });
+    </script>
+  </body>
+</html>
