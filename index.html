@@ -79,7 +79,7 @@ st.markdown("""
 
 # Application Navigation
 with st.sidebar:
-    st.image("https://images.unsplash.com/photo-1459213599465-03ad6a47b431?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80", use_container_width=True)
+    st.image("https://images.unsplash.com/photo-1459213599465-03ad6a47b431?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80", use_column_width=True)
     st.title("🌊 바다 탐험가")
     menu = st.radio(
         "메뉴 선택",
@@ -121,7 +121,7 @@ elif menu == "🗺️ 바다 지도 (Ocean Map)":
     locs = pd.DataFrame({'lat': [33.22, 36.85, 34.81], 'lon': [126.56, 126.18, 127.48], 'name': ['서귀포', '태안', '보성']})
     fig = px.scatter_mapbox(locs, lat="lat", lon="lon", hover_name="name", zoom=5)
     fig.update_layout(mapbox_style="open-street-map", margin={"r":0,"t":0,"l":0,"b":0})
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_column_width=True)
 `
         },
       }, document.getElementById("root")).then(() => {
