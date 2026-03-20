@@ -56,7 +56,7 @@ st.markdown("""
 
 # Application Navigation
 with st.sidebar:
-    st.image("https://images.unsplash.com/photo-1459213599465-03ad6a47b431?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80", use_container_width=True)
+    st.image("https://images.unsplash.com/photo-1459213599465-03ad6a47b431?ixlib=rbh-1.2.1&auto=format&fit=crop&w=400&q=80", use_column_width=True)
     st.title("🌊 바다 탐험가 (Ocean Explorer)")
     menu = st.radio(
         "메뉴 선택",
@@ -184,7 +184,7 @@ elif menu == "🗺️ 바다 지도 (Ocean Map)":
     fig.update_layout(mapbox_style="open-street-map")
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_column_width=True)
     
     st.markdown("""
     > **해양 보호구역(MPA)**이란?  
